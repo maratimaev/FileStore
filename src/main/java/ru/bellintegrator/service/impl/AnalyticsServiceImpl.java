@@ -1,9 +1,12 @@
-package ru.bellintegrator.service;
+package ru.bellintegrator.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.bellintegrator.dto.Analytics;
 import ru.bellintegrator.dto.UserView;
+import ru.bellintegrator.service.AnalyticsService;
+import ru.bellintegrator.service.FileService;
+import ru.bellintegrator.service.UserService;
 
 import java.util.ArrayList;
 import java.util.List;

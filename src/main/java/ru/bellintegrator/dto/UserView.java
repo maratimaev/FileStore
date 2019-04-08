@@ -9,7 +9,9 @@ import ru.bellintegrator.entity.Role;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Set;
 
 /**
@@ -46,6 +48,11 @@ public class UserView implements UserDetails {
      * Код активации
      */
     private String activationCode;
+
+    /**
+     * Дата генерации кода активации
+     */
+    private LocalDate activationCodeCreation;
 
     /**
      * Роли пользователя
@@ -149,6 +156,14 @@ public class UserView implements UserDetails {
 
     public void setActivationCode(String activationCode) {
         this.activationCode = activationCode;
+    }
+
+    public LocalDate getActivationCodeCreation() {
+        return activationCodeCreation;
+    }
+
+    public void setActivationCodeCreation(LocalDate activationCodeCreation) {
+        this.activationCodeCreation = activationCodeCreation;
     }
 
     @Override

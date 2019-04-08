@@ -23,6 +23,18 @@ public interface UserService extends UserDetailsService{
      */
     boolean         activateUser        (String activationCode);
 
+    /** Проверка активирован ли пользователь
+     * @param userView модель пользователя
+     * @return правда/ложь
+     */
+    boolean         hasActivated        (UserView userView);
+
+    /** Проверка на истечение срока активации кода
+     * @param acivationCode код
+     * @return правда/ложь
+     */
+    boolean         hasCodeExpired(String acivationCode);
+
     /** Получение списка пользователей
      * @return список dto пользователей
      */

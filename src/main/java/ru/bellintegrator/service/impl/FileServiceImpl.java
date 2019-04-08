@@ -1,4 +1,4 @@
-package ru.bellintegrator.service;
+package ru.bellintegrator.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -15,6 +15,8 @@ import ru.bellintegrator.entity.FileInfo;
 import ru.bellintegrator.entity.User;
 import ru.bellintegrator.entity.mapper.MapperFacade;
 import ru.bellintegrator.repository.FileInfoRepository;
+import ru.bellintegrator.service.FileService;
+import ru.bellintegrator.service.UserService;
 
 import java.io.File;
 import java.io.IOException;

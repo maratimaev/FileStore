@@ -1,4 +1,4 @@
-package ru.bellintegrator.service;
+package ru.bellintegrator.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,8 +15,15 @@ import ru.bellintegrator.entity.User;
 import ru.bellintegrator.entity.mapper.MapperFacade;
 import ru.bellintegrator.repository.UserRepository;
 
+import ru.bellintegrator.service.GroupService;
+import ru.bellintegrator.service.MailService;
+import ru.bellintegrator.service.UserService;
+
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -28,7 +35,7 @@ import java.util.stream.Collectors;
  * {@inheritDoc}
  */
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     /**
      * {@inheritDoc}
@@ -69,18 +76,23 @@ public class UserServiceImpl implements UserService{
         if (userView == null) {
             throw new RuntimeException("(Custom) Error -> userView can't be null");
         }
-        User user = mapperFacade.map(userView, User.class);
-        ListGroup listGroup = groupService.createListGroup();
-        DownloadGroup downloadGroup = groupService.createDownloadGroup();
 
-        user.setActive(false);
-        user.setRoles(Collections.singleton(Role.USER));
-        user.setListGroup(listGroup);
-        user.setDownloadGroup(downloadGroup);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setActivationCode(UUID.randomUUID().toString());
-        userRepository.save(user);
+        User user = getUser(userView.getUsername());
+        if(user == null) {
+            user = mapperFacade.map(userView, User.class);
+            ListGroup listGroup = groupService.createListGroup();
+            DownloadGroup downloadGroup = groupService.createDownloadGroup();
 
+            user.setActive(false);
+            user.setRoles(Collections.singleton(Role.USER));
+            user.setListGroup(listGroup);
+            user.setDownloadGroup(downloadGroup);
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            user.setActivationCode(UUID.randomUUID().toString());
+            userRepository.save(user);
+        }
+
+        user.setActivationCodeCreation(LocalDate.now());
         if (!StringUtils.isEmpty(user.getEmail())) {
             String msg = String.format("Hello, %s! \n To activate your account please visit http://localhost:8080/activate/%s",
                    user.getUsername(), user.getActivationCode());
@@ -106,6 +118,41 @@ public class UserServiceImpl implements UserService{
             isActivated = true;
         }
         return isActivated;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public boolean hasCodeExpired(String activationCode) {
+        if (StringUtils.isEmpty(activationCode)) {
+            throw new RuntimeException("(Custom) Error -> activationCode can't be null");
+        }
+        boolean isExpired = true;
+        User user = userRepository.findByActivationCode(activationCode);
+        if(user != null) {
+            LocalDate creation = user.getActivationCodeCreation();
+            Period diff = Period.between(creation, LocalDate.now());
+           if(diff.getDays() < 2) {
+               isExpired = false;
+           }
+        }
+        return isExpired;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Transactional(readOnly = true)
+    @Override
+    public boolean hasActivated(UserView userView) {
+        if (userView == null) {
+            throw new RuntimeException("(Custom) Error -> user can't be null");
+        }
+        boolean hasActivated = false;
+        User user = userRepository.findByUsername(userView.getUsername());
+        if(user != null) {
+            hasActivated= user.isActive();
+        }
+        return hasActivated;
     }
 
     /**

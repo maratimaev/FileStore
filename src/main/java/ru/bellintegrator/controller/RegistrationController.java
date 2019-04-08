@@ -37,25 +37,37 @@ public class RegistrationController {
     @PostMapping("/registration")
     public String addUser(@Validated UserView userView, Model model) {
         if (userService.userExist(userView.getUsername())) {
-            model.addAttribute("message", "User already exists!");
-            return "multipartfile/registration";
+             if(userService.hasActivated(userView)) {
+                model.addAttribute("message", "User already exists and activated!");
+                 return "multipartfile/registration";
+            } else {
+                 model.addAttribute("message", "User already exists, but not activated. Email resented.");
+                 model.addAttribute("messageType", "danger");
+             }
         }
         userService.createUser(userView);
         return "multipartfile/login";
     }
 
-    /** Активация пользователя по коду из письма
+    /** Активация пользователя по коду из письма, проверка что код не просрочен на 1 день
      * @param code код из письма
      * @param model передача параметров во фронт
      * @return страница логина
      */
     @GetMapping("/activate/{code}")
     public String activateEmail(@PathVariable String code, Model model) {
-        boolean isActivated = userService.activateUser(code);
-        if (isActivated) {
-            model.addAttribute("activated", "User successfully activated!");
+        if(userService.hasCodeExpired(code)) {
+            model.addAttribute("activated", "Activation code expired! Create user again.");
+            model.addAttribute("activatedType", "danger");
         } else {
-            model.addAttribute("notActivated", "Activation code not found!");
+            boolean isActivated = userService.activateUser(code);
+            if (isActivated) {
+                model.addAttribute("activated", "User successfully activated!");
+                model.addAttribute("activatedType", "success");
+            } else {
+                model.addAttribute("notActivated", "Activation code not found!");
+                model.addAttribute("activatedType", "danger");
+            }
         }
         return "multipartfile/login";
     }

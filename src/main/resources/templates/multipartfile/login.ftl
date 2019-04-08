@@ -13,15 +13,11 @@
         </div>
     </#if>
     <#if activated??>
-        <div class="alert alert-success" role="alert">
+        <div class="alert alert-${activatedType}" role="alert">
             ${activated}
         </div>
     </#if>
-    <#if notActivated??>
-        <div class="alert alert-danger" role="alert">
-            ${notActivated}
-        </div>
-    </#if>
+
     <div class="mb-3"><b>Login</b></div>
     <#--${(message)!}-->
     <@l.login "/login" "Sign on" false/>

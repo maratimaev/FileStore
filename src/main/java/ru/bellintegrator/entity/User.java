@@ -13,6 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.Set;
 
 /**
@@ -48,6 +50,12 @@ public class User {
      * Код активациии
      */
     private String activationCode;
+
+
+    /**
+     * Дата генерации кода активации
+     */
+    private LocalDate activationCodeCreation;
 
     /**
      * Роли пользователя
@@ -139,6 +147,14 @@ public class User {
 
     public void setActivationCode(String activationCode) {
         this.activationCode = activationCode;
+    }
+
+    public LocalDate getActivationCodeCreation() {
+        return activationCodeCreation;
+    }
+
+    public void setActivationCodeCreation(LocalDate activationCodeCreation) {
+        this.activationCodeCreation = activationCodeCreation;
     }
 }
 

@@ -1,4 +1,4 @@
-package ru.bellintegrator.service;
+package ru.bellintegrator.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,6 +11,9 @@ import ru.bellintegrator.entity.Message;
 import ru.bellintegrator.entity.User;
 import ru.bellintegrator.repository.DownloadGroupRepository;
 import ru.bellintegrator.repository.ListGroupRepository;
+import ru.bellintegrator.service.GroupService;
+import ru.bellintegrator.service.MessageService;
+import ru.bellintegrator.service.UserService;
 
 import java.util.HashSet;
 import java.util.List;

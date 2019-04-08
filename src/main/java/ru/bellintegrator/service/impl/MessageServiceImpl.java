@@ -1,4 +1,4 @@
-package ru.bellintegrator.service;
+package ru.bellintegrator.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,6 +11,8 @@ import ru.bellintegrator.entity.User;
 import ru.bellintegrator.entity.mapper.MapperFacade;
 import ru.bellintegrator.repository.MessageRepository;
 import ru.bellintegrator.repository.UserRepository;
+import ru.bellintegrator.service.MessageService;
+import ru.bellintegrator.service.UserService;
 
 import java.util.List;
 import java.util.Map;
