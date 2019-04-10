@@ -10,13 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import ru.bellintegrator.dto.MessageView;
 import ru.bellintegrator.dto.UserView;
 import ru.bellintegrator.service.FileService;
-import ru.bellintegrator.service.MessageService;
-
-import java.util.List;
-
 
 /**
  * Загрузка файлов
@@ -24,18 +19,11 @@ import java.util.List;
 @Controller
 @RequestMapping("/upload")
 public class UploadFileController {
-
     /**
      * Сервис работы с файлами
      */
     @Autowired
     private FileService fileService;
-
-    /**
-     * Сервис работы с сообщениями
-     */
-    @Autowired
-    private MessageService messageService;
 
     /** Отображение страницы с загрузкой файлов + сообщения от других пользователей
      * @param userView dto пользователя
@@ -44,20 +32,11 @@ public class UploadFileController {
      */
     @GetMapping
     public String upload(@AuthenticationPrincipal UserView userView, Model model) {
-        List<MessageView> accessMessagesToCurrentUser = messageService.getAccessMessagesTo(userView);
-        if(!(accessMessagesToCurrentUser == null || accessMessagesToCurrentUser.isEmpty())) {
-            model.addAttribute("accessMessagesToCurrentUser", accessMessagesToCurrentUser);
-        }
-        List<MessageView> infoMessagesToCurrentUser = messageService.getInfoMessagesTo(userView);
-        if(!(infoMessagesToCurrentUser == null || infoMessagesToCurrentUser.isEmpty())) {
-            model.addAttribute("infoMessagesToCurrentUser", infoMessagesToCurrentUser);
-        }
-
         model.addAttribute("username", userView.getUsername());
         return "multipartfile/upload";
     }
 
-    /** Соъранение файла на сервере
+    /** Сохранение файла на сервере
      * @param file загружаемый файл
      * @param userView dto пользователя
      * @param model передача параметров во фронт

@@ -1,6 +1,7 @@
 package ru.bellintegrator.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,6 +13,7 @@ import ru.bellintegrator.service.MessageService;
 /**
  * Работа с сообщениями между пользователями
  */
+@EnableScheduling
 @Controller
 public class MessageController {
 
@@ -57,5 +59,4 @@ public class MessageController {
         messageService.deleteMessage(msgUuid);
         return "redirect:/upload";
     }
-
 }
