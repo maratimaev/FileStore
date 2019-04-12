@@ -1,5 +1,6 @@
 package ru.bellintegrator;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -11,16 +12,19 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
+import ru.bellintegrator.service.UserService;
 
-import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import static org.hamcrest.core.Is.is;
 
 @RunWith(SpringRunner.class)
+@SpringBootTest
 @TestPropertySource("classpath:application-test.properties")
 public class CreateNewUserSeleniumTest {
 
@@ -28,6 +32,9 @@ public class CreateNewUserSeleniumTest {
 	private String geckoDriver;
 
 	private WebDriver driver;
+
+	@Autowired
+	private UserService userService;
 
 	@Before
 	public void prepareFirefox() {
@@ -47,13 +54,15 @@ public class CreateNewUserSeleniumTest {
 	 */
 	@Test
 	public void testBadUsernameLogin() {
+		String username = RandomStringUtils.random(8, true, true);
+		String password = RandomStringUtils.random(8, true, true);
 		driver.get("http://localhost:8080");
 		Assert.assertThat(driver.getTitle(), is("File store"));
 
 		driver.findElement(By.id("upload")).click();
 
-		driver.findElement(By.id("username")).sendKeys(generateAlphabet(4));
-		driver.findElement(By.id("password")).sendKeys(generateAlphabet(4));
+		driver.findElement(By.id("username")).sendKeys(username);
+		driver.findElement(By.id("password")).sendKeys(password);
 		driver.findElement(By.id("submit_button")).click();
 		String errorMessage = driver.findElement(By.id("spring_security_message")).getText();
 
@@ -65,8 +74,8 @@ public class CreateNewUserSeleniumTest {
 	 */
 	@Test
 	public void testUserCreationLogin() {
-		String username = generateAlphabet(4);
-		String password = generateAlphabet(4);
+		String username = RandomStringUtils.random(8, true, true);
+		String password = RandomStringUtils.random(8, true, true);
 		String email = getEmailAddress();
 
 		String emailWindowHandle=driver.getWindowHandle();
@@ -91,8 +100,12 @@ public class CreateNewUserSeleniumTest {
 		driver.findElement(By.id("password")).sendKeys(password);
 		driver.findElement(By.id("submit_button")).click();
 
+		WebDriverWait wait = new WebDriverWait(driver, 15);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("fileUploadForm")));
 		String tagName = driver.findElement(By.id("fileUploadForm")).getText();
 		Assert.assertThat(tagName.contains("Choose file"), is(true));
+
+		userService.delete(username);
 	}
 
 	/**
@@ -144,36 +157,6 @@ public class CreateNewUserSeleniumTest {
 
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.partialLinkText("/activate/")));
 		driver.findElement(By.partialLinkText("/activate/")).click();
-	}
-
-	/** Генерация строки из случайных символов алфавита
-	 * @param size длина строки
-	 * @return строка
-	 */
-	private String generateAlphabet(int size) {
-		return generateCode("ABCDEFGHIJKLMNOPQRSTUVWXYZ", size);
-	}
-
-	/** Генерация строки из случайных цифровых символов
-	 * @param size длина строки
-	 * @return строка
-	 */
-	private String generateDigits(int size) {
-		return generateCode("0123456789", size);
-	}
-
-	/** Генерация случайной строки из набора символов
-	 * @param pattern список символов
-	 * @param size длина строки
-	 * @return строка
-	 */
-	private String generateCode(String pattern, int size) {
-		StringBuilder result = new StringBuilder();
-		Random random = new Random();
-		for (int i = 0; i < size; i++) {
-			result.append(pattern.charAt(random.nextInt(pattern.length())));
-		}
-		return result.toString();
 	}
 }
 

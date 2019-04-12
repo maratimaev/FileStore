@@ -50,26 +50,14 @@ public class RoleController {
     }
 
     /** Сохранение имени и ролей пользователя
-     * @param username измененное имя пользователя
      * @param form данные со странцы
      * @param userId id пользователя
      * @return страница со списком пользователей
      */
     @PostMapping
-    public String userSave(
-            @RequestParam String username,
-            @RequestParam Map<String, String> form,
-            @RequestParam("userId") Long userId,
-            Model model
-    ) {
-        if (userService.userExist(username)) {
-            model.addAttribute("message", "Username already exists!");
-            model.addAttribute("user", userService.getUserView(userId));
-            model.addAttribute("roles", Role.values());
-            return "multipartfile/userEdit";
-        }
-        userService.save(username, form, userId);
+    public String userSave(@RequestParam Map<String, String> form, @RequestParam("userId") Long userId) {
+        userService.save(form, userId);
         return "redirect:/manageUsers";
     }
-    }
+}
 

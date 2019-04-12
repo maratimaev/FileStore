@@ -12,14 +12,14 @@
 
     <div class="form-group mt-3">
         <form action="/manageUsers" method="post">
-            <div class="col-sm-6">
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text" id="basic-addon1">Username</span>
-                    </div>
-                    <input type="text" class="form-control" name="username" value="${user.username}" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
-                </div>
-            </div>
+            <#--<div class="col-sm-6">-->
+                <#--<div class="input-group mb-3">-->
+                    <#--<div class="input-group-prepend">-->
+                        <#--<span class="input-group-text" id="basic-addon1">Username</span>-->
+                    <#--</div>-->
+                    <#--<input type="text" class="form-control" name="username" value="${user.username}" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">-->
+                <#--</div>-->
+            <#--</div>-->
             <div class="col-sm-6">
                 <#list roles as role>
                     <div>

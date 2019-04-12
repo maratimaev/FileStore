@@ -18,7 +18,7 @@
             <tbody>
             <#list userfiles as file>
                 <tr>
-                    <td><a href=${file.url}>${file.filename}</a></td>
+                    <td><a href="${file.url}">${file.filename}</a></td>
                     <td><i>${file.fileSize}</i></td>
                     <td><@p.post "/files" "${file.tmpFilename}" "tmpFilename" "Delete"/></td>
                 </tr>
@@ -43,7 +43,7 @@
             <tbody>
             <#list sharedfiles as file>
                 <tr>
-                    <td><#if file.url??><a href=${file.url}>${file.filename}</a><#else>${file.filename}</td></#if>
+                    <td><#if file.url??><a href="${file.url}">${file.filename}</a><#else>${file.filename}</td></#if>
                     <td><i>${file.fileSize}</i></td>
                     <td><span>${file.userView.username}</span></td>
                 </tr>

@@ -4,6 +4,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 import ru.bellintegrator.dto.FileInfoView;
 import ru.bellintegrator.dto.UserView;
+import ru.bellintegrator.entity.FileInfo;
 
 import java.util.List;
 
@@ -57,11 +58,16 @@ public interface FileService {
      */
     Integer countFiles(UserView userView);
 
-    /** Сохранение файла
+    /** Генерация UUID и сохранение файла
      * @param file  файл
      * @param owner dto владельца
      */
     void store(MultipartFile file, UserView owner);
+
+    /** Сохранение entity файла в БД
+     * @param fileInfo entity файла
+     */
+    void saveToDb(FileInfo fileInfo);
 
     /** Скачивание файла
      * @param tmpFilename имя файла c Uuid
@@ -73,4 +79,9 @@ public interface FileService {
      * @param tmpFilename имя файла с Uuid
      */
     void deleteFile(String tmpFilename);
+
+    /** Удаление entity файла из БД
+     * @param fileInfo entity файла
+     */
+    void deleteFromDb(FileInfo fileInfo);
 }

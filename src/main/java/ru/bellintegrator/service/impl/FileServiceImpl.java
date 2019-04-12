@@ -201,10 +201,19 @@ public class FileServiceImpl implements FileService {
             String str = tempFile.getName();
 
             User user = mapperFacade.map(owner, User.class);
-            fileInfoRepository.save(new FileInfo(originalFileName, tempFile.getName(), file.getSize(), user, 0));
+            saveToDb(new FileInfo(originalFileName, tempFile.getName(), file.getSize(), user, 0));
         } catch (Exception e) {
             throw new RuntimeException("FAIL! -> message = " + e.getMessage());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional
+    public void saveToDb(FileInfo fileInfo) {
+        fileInfoRepository.save(fileInfo);
     }
 
     /**
@@ -246,6 +255,15 @@ public class FileServiceImpl implements FileService {
             throw new RuntimeException("Error -> can't delete file");
         }
         FileInfo fileInfo = fileInfoRepository.findByTmpFilename(tmpFilename);
+        deleteFromDb(fileInfo);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional
+    public void deleteFromDb(FileInfo fileInfo) {
         fileInfoRepository.delete(fileInfo);
     }
 }

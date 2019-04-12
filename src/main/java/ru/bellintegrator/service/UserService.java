@@ -88,9 +88,13 @@ public interface UserService extends UserDetailsService{
     boolean         userExist           (String username);
 
     /** Сохранение пользователя
-     * @param username имя
      * @param form данные со страницы
      * @param userId id пользователя
      */
-    void            save                (String username, Map<String, String> form, Long userId);
+    void            save                (Map<String, String> form, Long userId);
+
+    /** Удаление пользователя
+     * @param username  имя
+     */
+    void            delete              (String username);
 }

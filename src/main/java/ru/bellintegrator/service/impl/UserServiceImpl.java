@@ -14,7 +14,6 @@ import ru.bellintegrator.entity.Role;
 import ru.bellintegrator.entity.User;
 import ru.bellintegrator.entity.mapper.MapperFacade;
 import ru.bellintegrator.repository.UserRepository;
-
 import ru.bellintegrator.service.GroupService;
 import ru.bellintegrator.service.MailService;
 import ru.bellintegrator.service.UserService;
@@ -23,7 +22,6 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -280,12 +278,11 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     @Transactional
-    public void save(String username, Map<String, String> form, Long userId) {
-        if (StringUtils.isEmpty(username) || form == null) {
-            throw new RuntimeException("(Custom) Error -> username and form can't be null");
+    public void save(Map<String, String> form, Long userId) {
+        if (form == null) {
+            throw new RuntimeException("(Custom) Error -> form can't be null");
         }
         User user = getUser(userId);
-        user.setUsername(username);
         Set<String> roles = Arrays.stream(Role.values())
                 .map(Role::name)
                 .collect(Collectors.toSet());
@@ -298,6 +295,18 @@ public class UserServiceImpl implements UserService {
             }
         }
         userRepository.save(user);
+    }
+
+    @Override
+    @Transactional
+    public void delete(String username) {
+        if (StringUtils.isEmpty(username)) {
+            throw new RuntimeException("(Custom) Error -> username can't be null");
+        }
+        User user = getUser(username);
+        if(user != null) {
+            userRepository.delete(user);
+        }
     }
 }
 
