@@ -139,7 +139,7 @@ public class MessageServiceImpl implements MessageService {
         try {
             messageRepository.deleteByMsgUuid(msgUuid);
         } catch (Exception e) {
-            throw new RuntimeException(String.format("Wrong message msgUuid=%s", msgUuid), e);
+            throw new RuntimeException(String.format("Wrong message msgUuid = %s", msgUuid), e);
         }
     }
 
@@ -170,7 +170,7 @@ public class MessageServiceImpl implements MessageService {
         try {
             message = messageRepository.findByMsgUuid(msgUuid);
         } catch (Exception e) {
-            throw new RuntimeException(String.format("Wrong message msgUuid=%s", msgUuid), e);
+            throw new RuntimeException(String.format("Wrong message msgUuid = %s", msgUuid), e);
         }
         return message;
     }

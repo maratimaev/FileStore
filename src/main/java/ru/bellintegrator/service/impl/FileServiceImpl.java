@@ -66,7 +66,7 @@ public class FileServiceImpl implements FileService {
             try {
                 Files.createDirectory(rootLocation);
             } catch (IOException e) {
-                throw new RuntimeException("Could not initialize storage!");
+                throw new RuntimeException("Could not initialize storage!", e);
             }
         }
     }
@@ -203,7 +203,7 @@ public class FileServiceImpl implements FileService {
             User user = mapperFacade.map(owner, User.class);
             saveToDb(new FileInfo(originalFileName, tempFile.getName(), file.getSize(), user, 0));
         } catch (Exception e) {
-            throw new RuntimeException("FAIL! -> message = " + e.getMessage());
+            throw new RuntimeException(String.format("FAIL! -> message = %s", e.getMessage()), e);
         }
     }
 
@@ -234,10 +234,10 @@ public class FileServiceImpl implements FileService {
                 fileInfoRepository.save(fileInfo);
                 return resource;
             }else{
-                throw new RuntimeException("FAIL!");
+                throw new RuntimeException("Preparing file to download fail!");
             }
         } catch (MalformedURLException e) {
-            throw new RuntimeException("Error! -> message = " + e.getMessage());
+            throw new RuntimeException(String.format("Error! -> message = %s", e.getMessage()), e);
         }
     }
 
