@@ -38,4 +38,12 @@ public class Analytics {
     public void setCountFiles(Integer countFiles) {
         this.countFiles = countFiles;
     }
+
+    @Override
+    public String toString() {
+        return "Analytics{" +
+                "userView=" + userView +
+                ", countFiles=" + countFiles +
+                '}';
+    }
 }

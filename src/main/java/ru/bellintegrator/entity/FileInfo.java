@@ -114,4 +114,17 @@ public class FileInfo {
     public void setDownloadCount(Integer downloadCount) {
         this.downloadCount = downloadCount;
     }
+
+    @Override
+    public String toString() {
+        return "FileInfo{" +
+                "id=" + id +
+                ", version=" + version +
+                ", filename='" + filename + '\'' +
+                ", tmpFilename='" + tmpFilename + '\'' +
+                ", fileSize=" + fileSize +
+                ", user=" + user +
+                ", downloadCount=" + downloadCount +
+                '}';
+    }
 }

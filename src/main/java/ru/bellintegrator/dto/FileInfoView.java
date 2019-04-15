@@ -86,4 +86,16 @@ public class FileInfoView {
     public void setDownloadCount(Integer downloadCount) {
         this.downloadCount = downloadCount;
     }
+
+    @Override
+    public String toString() {
+        return "FileInfoView{" +
+                "filename='" + filename + '\'' +
+                ", tmpFilename='" + tmpFilename + '\'' +
+                ", url='" + url + '\'' +
+                ", fileSize=" + fileSize +
+                ", downloadCount=" + downloadCount +
+                ", userView=" + userView +
+                '}';
+    }
 }

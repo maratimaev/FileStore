@@ -91,4 +91,16 @@ public class Message {
     public void setMsgUuid(String msgUuid) {
         this.msgUuid = msgUuid;
     }
+
+    @Override
+    public String toString() {
+        return "Message{" +
+                "id=" + id +
+                ", from=" + from +
+                ", to=" + to +
+                ", code=" + code +
+                ", msg='" + msg + '\'' +
+                ", msgUuid='" + msgUuid + '\'' +
+                '}';
+    }
 }

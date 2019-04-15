@@ -159,5 +159,21 @@ public class User {
     public void setActivationCodeCreation(LocalDate activationCodeCreation) {
         this.activationCodeCreation = activationCodeCreation;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", active=" + active +
+                ", email='" + email + '\'' +
+                ", activationCode='" + activationCode + '\'' +
+                ", activationCodeCreation=" + activationCodeCreation +
+                ", roles=" + roles +
+                ", listGroup=" + listGroup +
+                ", downloadGroup=" + downloadGroup +
+                '}';
+    }
 }
 

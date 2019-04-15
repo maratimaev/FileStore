@@ -11,7 +11,6 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.Collection;
-import java.util.Date;
 import java.util.Set;
 
 /**
@@ -189,5 +188,21 @@ public class UserView implements UserDetails {
     @Override
     public boolean isEnabled() {
         return isActive();
+    }
+
+    @Override
+    public String toString() {
+        return "UserView{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", active=" + active +
+                ", email='" + email + '\'' +
+                ", activationCode='" + activationCode + '\'' +
+                ", activationCodeCreation=" + activationCodeCreation +
+                ", roles=" + roles +
+                ", listGroup=" + listGroup +
+                ", downloadGroup=" + downloadGroup +
+                '}';
     }
 }
