@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import ru.bellintegrator.service.FileService;
 
@@ -12,7 +13,7 @@ import ru.bellintegrator.service.FileService;
  */
 @SpringBootApplication
 @EnableAspectJAutoProxy
-public class SpringUploadDownloadMultipartFileApplication implements CommandLineRunner {
+public class SpringUploadDownloadMultipartFileApplication extends SpringBootServletInitializer implements CommandLineRunner {
 
     @Autowired
     FileService fileService;
