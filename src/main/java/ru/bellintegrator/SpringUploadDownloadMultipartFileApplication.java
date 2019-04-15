@@ -6,18 +6,27 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import ru.bellintegrator.service.FileService;
 
+/**
+ * Старт приложения
+ */
 @SpringBootApplication
 public class SpringUploadDownloadMultipartFileApplication implements CommandLineRunner {
 
     @Autowired
     FileService fileService;
 
+    /** Точка старта приложения
+     * @param args аргументы строки
+     */
     public static void main(String[] args) {
         SpringApplication.run(SpringUploadDownloadMultipartFileApplication.class, args);
     }
 
+    /** Подготовка необходимых для работы ресурсов
+     * @param args аргументы строки
+     */
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         fileService.init();
     }
 }

@@ -118,6 +118,9 @@ public class UserServiceImpl implements UserService {
         return isActivated;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional(readOnly = true)
     public boolean hasCodeExpired(String activationCode) {
@@ -200,7 +203,7 @@ public class UserServiceImpl implements UserService {
     public User getUser(Long id) {
         Optional<User> optional = userRepository.findById(id);
         if (!optional.isPresent()) {
-            throw new RuntimeException(String.format("Error -> Can't find user by id=%s", id));
+            throw new RuntimeException(String.format("(Custom) Error -> Can't find user by id=%s", id));
         }
         return optional.get();
     }
@@ -297,6 +300,9 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional
     public void delete(String username) {

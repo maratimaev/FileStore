@@ -9,7 +9,7 @@ import java.util.List;
  */
 public interface AnalyticsService {
     /** Получение статситики по всем пользователям
-     * @return список dto Analitycs
+     * @return список dto Analytics
      */
     List<Analytics> getAllUserStat();
 }

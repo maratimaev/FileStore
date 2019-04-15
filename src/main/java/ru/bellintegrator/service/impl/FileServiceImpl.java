@@ -1,6 +1,7 @@
 package ru.bellintegrator.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ import ru.bellintegrator.repository.FileInfoRepository;
 import ru.bellintegrator.service.FileService;
 import ru.bellintegrator.service.UserService;
 
+import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -37,7 +39,9 @@ public class FileServiceImpl implements FileService {
     /**
      * Директория хранения файлов
      */
-    private final Path rootLocation = Paths.get("service");
+    @Value("${file-store-folder}")
+    private String fileStoreFolder;
+    private Path rootLocation;
 
     /**
      * {@inheritDoc}
@@ -55,7 +59,15 @@ public class FileServiceImpl implements FileService {
      * {@inheritDoc}
      */
     @Autowired
-    MapperFacade mapperFacade;
+    private MapperFacade mapperFacade;
+
+    /**
+     * Инициализация директории хранения файлов
+     */
+    @PostConstruct
+    public void setFileStoreFolder(){
+        this.rootLocation = Paths.get(fileStoreFolder);
+    }
 
     /**
      * {@inheritDoc}
@@ -66,7 +78,7 @@ public class FileServiceImpl implements FileService {
             try {
                 Files.createDirectory(rootLocation);
             } catch (IOException e) {
-                throw new RuntimeException("Could not initialize storage!", e);
+                throw new RuntimeException("(Custom) Could not initialize storage!", e);
             }
         }
     }
@@ -130,8 +142,7 @@ public class FileServiceImpl implements FileService {
     @Override
     @Transactional(readOnly = true)
     public List<FileInfoView> getAllFiles() {
-        List<FileInfo> allFileInfo = fileInfoRepository.findAll();
-        return mapperFacade.mapToFileInfoViewList(allFileInfo);
+        return mapperFacade.mapToFileInfoViewList(fileInfoRepository.findAll());
     }
 
     /**
@@ -145,12 +156,15 @@ public class FileServiceImpl implements FileService {
         List<FileInfoView> filesWithDownloadLink = new ArrayList<>();
 
         for (FileInfoView f: files) {
-            filesWithDownloadLink.add(new FileInfoView(
-                    f.getFilename(),
-                    f.getTmpFilename(),
-                    MvcUriComponentsBuilder.fromMethodName(DownloadFileController.class, "downloadFile", f.getTmpFilename()).build().toString(),
-                    f.getFileSize(),
-                    f.getUserView()
+            filesWithDownloadLink.add(
+                    new FileInfoView(
+                        f.getFilename(),
+                        f.getTmpFilename(),
+                        MvcUriComponentsBuilder.fromMethodName(
+                                DownloadFileController.class,"downloadFile", f.getTmpFilename()
+                                ).build().toString(),
+                        f.getFileSize(),
+                        f.getUserView()
             ));
         }
         return filesWithDownloadLink;
@@ -229,12 +243,12 @@ public class FileServiceImpl implements FileService {
             FileInfo fileInfo = fileInfoRepository.findByTmpFilename(tmpFilename);
             Path file = rootLocation.resolve(tmpFilename);
             Resource resource = new UrlResource(file.toUri());
-            if(resource.exists() || resource.isReadable()) {
+            if (resource.exists() || resource.isReadable()) {
                 fileInfo.setDownloadCount(fileInfo.getDownloadCount() + 1);
                 fileInfoRepository.save(fileInfo);
                 return resource;
-            }else{
-                throw new RuntimeException("Preparing file to download fail!");
+            } else {
+                throw new RuntimeException("(Custom) Preparing file to download fail!");
             }
         } catch (MalformedURLException e) {
             throw new RuntimeException(String.format("Error! -> message = %s", e.getMessage()), e);
@@ -252,7 +266,7 @@ public class FileServiceImpl implements FileService {
         }
         Path path = rootLocation.resolve(tmpFilename);
         if(!path.toAbsolutePath().toFile().delete()) {
-            throw new RuntimeException("Error -> can't delete file");
+            throw new RuntimeException("(Custom) Error -> can't delete file");
         }
         FileInfo fileInfo = fileInfoRepository.findByTmpFilename(tmpFilename);
         deleteFromDb(fileInfo);

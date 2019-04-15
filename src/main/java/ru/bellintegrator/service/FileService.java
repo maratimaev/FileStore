@@ -13,7 +13,7 @@ import java.util.List;
  */
 public interface FileService {
     /**
-     * Создание дмректории хранения файлов
+     * Создание директории хранения файлов
      */
     void init();
 

@@ -20,6 +20,12 @@ public class AddMessagesResponseInterceptor extends HandlerInterceptorAdapter {
     @Autowired
     private MessageService messageService;
 
+    /** Добавление сообщений пользователю при отображении страниц
+     * @param request запрос
+     * @param response ответ
+     * @param handler следующий контроллер
+     * @param modelAndView отправка сообщений во фронт
+     */
     @Override
     public void postHandle(HttpServletRequest request,
                            HttpServletResponse response,

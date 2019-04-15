@@ -18,7 +18,7 @@
             <tbody>
             <#list allfiles as file>
                 <tr>
-                    <td><a href=${file.url}>${file.filename}</a></td>
+                    <td><a href="${file.url}">${file.filename}</a></td>
                     <td><i>${file.fileSize}</i></td>
                     <td>${file.userView.username}</td>
                     <td><@p.post "/admin" "${file.tmpFilename}" "tmpFilename" "Delete"/></td>

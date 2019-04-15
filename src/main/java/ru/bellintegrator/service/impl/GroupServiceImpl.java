@@ -144,13 +144,18 @@ public class GroupServiceImpl implements GroupService {
         Message message = messageService.getMessage(msgUuid);
         User addedUser = userService.getUser(message.getFrom().getUsername());
 
+        if (user == null || addedUser == null) {
+            throw new RuntimeException("(Custom) Error -> user and addedUser can't be null");
+        }
+
         switch (message.getCode()) {
             case 1:
                 ListGroup listGroup = user.getListGroup();
                 listGroup.getMembers().add(addedUser);
                 listGroupRepository.save(listGroup);
 
-                messageService.createMessage(user, addedUser, "User " + user.getUsername() + " gives you access to list files", 0);
+                messageService.createMessage(user, addedUser,
+                        String.format("User %s gives you access to list files", user.getUsername()), 0);
                 break;
             case 2:
                 ListGroup lg = user.getListGroup();
@@ -161,7 +166,8 @@ public class GroupServiceImpl implements GroupService {
                 dg.getMembers().add(addedUser);
                 downloadGroupRepository.save(dg);
 
-                messageService.createMessage(user, addedUser, "User " + user.getUsername() + " gives you access to download files", 0);
+                messageService.createMessage(user, addedUser,
+                        String.format("User %s gives you access to download files", user.getUsername()), 0);
                 break;
         }
         messageService.deleteMessage(message.getMsgUuid());

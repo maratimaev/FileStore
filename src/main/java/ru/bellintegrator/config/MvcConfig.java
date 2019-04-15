@@ -23,6 +23,9 @@ public class MvcConfig implements WebMvcConfigurer {
         registry.addViewController("/login").setViewName("multipartfile/login");
     }
 
+    /** Добавления перехватчика для вывода сообщений пользователю
+     * @param registry  регистрация
+     */
     @Override
     public void addInterceptors(InterceptorRegistry registry)
     {

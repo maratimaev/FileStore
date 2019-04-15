@@ -29,27 +29,31 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long id;
+
     /**
      * Имя пользователя
      */
     private String username;
+
     /**
      * Пароль
      */
     private String password;
+
     /**
      * Признак активности
      */
     private boolean active;
+
     /**
      * Почтовый адрес для активации пользователя
      */
     private String email;
+
     /**
      * Код активациии
      */
     private String activationCode;
-
 
     /**
      * Дата генерации кода активации
