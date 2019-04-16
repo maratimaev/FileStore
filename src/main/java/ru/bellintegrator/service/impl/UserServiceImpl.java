@@ -72,7 +72,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void createUser(UserView userView) {
         if (userView == null) {
-            throw new RuntimeException("(Custom) Error -> userView can't be null");
+                throw new RuntimeException("(Custom) Error -> userView can't be null");
         }
 
         User user = getUser(userView.getUsername());
@@ -297,6 +297,12 @@ public class UserServiceImpl implements UserService {
                 user.getRoles().add(Role.valueOf(key));
             }
         }
+        this.saveToDb(user);
+    }
+
+    @Override
+    @Transactional
+    public void saveToDb(User user) {
         userRepository.save(user);
     }
 

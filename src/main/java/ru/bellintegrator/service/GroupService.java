@@ -44,4 +44,14 @@ public interface GroupService {
      * @param msgUuid Uuid запроса
      */
     void saveUserGroupByMessage(UserView userView, String msgUuid);
+
+    /** Удаление List группы пользователя
+     * @param userView dto пользователя
+     */
+    void deleteListGroup(UserView userView );
+
+    /** Удаление Download группы пользователя
+     * @param userView dto пользователя
+     */
+    void deleteDownloadGroup(UserView userView );
 }

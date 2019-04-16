@@ -173,6 +173,22 @@ public class GroupServiceImpl implements GroupService {
         messageService.deleteMessage(message.getMsgUuid());
     }
 
+    @Override
+    @Transactional
+    public void deleteListGroup(UserView userView) {
+        User user = userService.getUser(userView.getUsername());
+        ListGroup listGroup = user.getListGroup();
+        listGroupRepository.delete(listGroup);
+    }
+
+    @Override
+    @Transactional
+    public void deleteDownloadGroup(UserView userView) {
+        User user = userService.getUser(userView.getUsername());
+        DownloadGroup downloadGroup = user.getDownloadGroup();
+        downloadGroupRepository.delete(downloadGroup);
+    }
+
     /**
      * {@inheritDoc}
      */

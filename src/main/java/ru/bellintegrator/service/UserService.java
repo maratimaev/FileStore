@@ -93,6 +93,11 @@ public interface UserService extends UserDetailsService{
      */
     void            save                (Map<String, String> form, Long userId);
 
+    /** Сохранение entity
+     * @param user entity
+     */
+    void            saveToDb            (User user);
+
     /** Удаление пользователя
      * @param username  имя
      */
