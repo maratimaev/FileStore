@@ -117,17 +117,19 @@ public class MessageServiceImpl implements MessageService {
      */
     @Override
     @Transactional
-    public void createMessage(User from, User to, String msg, Integer code) {
+    public String createMessage(User from, User to, String msg, Integer code) {
         if (StringUtils.isEmpty(msg) || from == null || to == null) {
             throw new RuntimeException("(Custom) Error -> msg, from, to can't be null");
         }
+        String uuid = UUID.randomUUID().toString();
         Message message = new Message();
         message.setFrom(from);
         message.setTo(to);
         message.setMsg(msg);
         message.setCode(code);
-        message.setMsgUuid(UUID.randomUUID().toString());
+        message.setMsgUuid(uuid);
         messageRepository.save(message);
+        return uuid;
     }
 
     /**

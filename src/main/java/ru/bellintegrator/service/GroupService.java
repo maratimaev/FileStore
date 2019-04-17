@@ -42,16 +42,27 @@ public interface GroupService {
     /** Сохранение групп прользователя по запросу от другого пользователя
      * @param userView dto пользователя
      * @param msgUuid Uuid запроса
+     * @return UUID отетного уведомляющего сообщения
      */
-    void saveUserGroupByMessage(UserView userView, String msgUuid);
+    String saveUserGroupByMessage(UserView userView, String msgUuid);
 
     /** Удаление List группы пользователя
-     * @param userView dto пользователя
+     * @param listGroup группа пользоватедей с возможностью просмотра файлов пользователя
      */
-    void deleteListGroup(UserView userView );
+    void deleteListGroup(ListGroup listGroup);
+
+    /** Удаление пользователй из группы просмотра
+     * @param listGroup группа пользоватедей с возможностью просмотра файлов пользователя
+     */
+    void clearListGroup(ListGroup listGroup);
 
     /** Удаление Download группы пользователя
-     * @param userView dto пользователя
+     * @param downloadGroup группа пользоватедей с возможностью скачивания файлов пользователя
      */
-    void deleteDownloadGroup(UserView userView );
+    void deleteDownloadGroup(DownloadGroup downloadGroup);
+
+    /** Удаление пользователей из группы скачивания файлов
+     * @param downloadGroup группа пользоватедей с возможностью скачивания файлов пользователя
+     */
+    void clearDownloadGroup(DownloadGroup downloadGroup);
 }

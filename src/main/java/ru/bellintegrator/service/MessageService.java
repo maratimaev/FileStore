@@ -41,8 +41,9 @@ public interface MessageService {
      * @param to адресат
      * @param msg тело сообщения
      * @param code код сообщения (0 - уведомление, 1 - доступ на просмотр, 2 - доступ на скачивание)
+     * @return UUID сообщения
      */
-    void createMessage(User from, User to, String msg, Integer code);
+    String createMessage(User from, User to, String msg, Integer code);
 
     /** Удаление сообщения
      * @param msgUuid Uuid сообщения

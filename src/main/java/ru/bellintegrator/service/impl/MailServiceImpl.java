@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import ru.bellintegrator.service.MailService;
 
 /**
@@ -29,6 +30,9 @@ public class MailServiceImpl implements MailService {
      * {@inheritDoc}
      */
     public void sendEmail(String emailTo, String subject, String msg) {
+        if (StringUtils.isEmpty(emailTo) || StringUtils.isEmpty(subject) || StringUtils.isEmpty(msg)) {
+            throw new RuntimeException("(Custom) Error -> emailTo, subject, msg to can't be null");
+        }
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setFrom(username);
         mailMessage.setTo(emailTo);

@@ -150,10 +150,8 @@ public class CreateNewUserSeleniumTest {
 	 */
 	private void clickToActivateUser() {
 		WebDriverWait wait = new WebDriverWait(driver, 15);
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By.linkText("asdfg9w3r@yandex.ru")));
-
-		driver.findElement(By.linkText("asdfg9w3r@yandex.ru")).click();
-
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("a[href*='https://temp-mail.org/en/view/']")));
+		driver.findElement(By.cssSelector("a[href*='https://temp-mail.org/en/view/']")).click();
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.partialLinkText("/activate/")));
 		driver.findElement(By.partialLinkText("/activate/")).click();
 	}

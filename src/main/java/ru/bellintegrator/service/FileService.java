@@ -61,8 +61,9 @@ public interface FileService {
     /** Генерация UUID и сохранение файла
      * @param file  файл
      * @param owner dto владельца
+     * @return entity файла
      */
-    void store(MultipartFile file, UserView owner);
+    FileInfo store(MultipartFile file, UserView owner);
 
     /** Сохранение entity файла в БД
      * @param fileInfo entity файла

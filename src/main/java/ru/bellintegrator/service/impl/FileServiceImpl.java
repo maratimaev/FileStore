@@ -201,7 +201,7 @@ public class FileServiceImpl implements FileService {
      */
     @Override
     @Transactional
-    public void store(MultipartFile file, UserView owner){
+    public FileInfo store(MultipartFile file, UserView owner){
         if (file == null || owner == null) {
             throw new RuntimeException("(Custom) Error -> file and owner can't be null");
         }
@@ -212,10 +212,11 @@ public class FileServiceImpl implements FileService {
 
             File tempFile = Files.createTempFile(tmpPath, randomUUID, "-" + originalFileName).toFile();
             file.transferTo(tempFile);
-            String str = tempFile.getName();
 
-            User user = mapperFacade.map(owner, User.class);
-            saveToDb(new FileInfo(originalFileName, tempFile.getName(), file.getSize(), user, 0));
+            User user = userService.getUser(owner.getUsername());
+            FileInfo fileInfo = new FileInfo(originalFileName, tempFile.getName(), file.getSize(), user, 0);
+            saveToDb(fileInfo);
+            return fileInfo;
         } catch (Exception e) {
             throw new RuntimeException(String.format("FAIL! -> message = %s", e.getMessage()), e);
         }
@@ -227,6 +228,9 @@ public class FileServiceImpl implements FileService {
     @Override
     @Transactional
     public void saveToDb(FileInfo fileInfo) {
+        if (fileInfo == null) {
+            throw new RuntimeException("(Custom) Error -> fileInfo can't be null");
+        }
         fileInfoRepository.save(fileInfo);
     }
 
@@ -278,6 +282,9 @@ public class FileServiceImpl implements FileService {
     @Override
     @Transactional
     public void deleteFromDb(FileInfo fileInfo) {
+        if (fileInfo == null) {
+            throw new RuntimeException("(Custom) Error -> fileInfo can't be null");
+        }
         fileInfoRepository.delete(fileInfo);
     }
 }

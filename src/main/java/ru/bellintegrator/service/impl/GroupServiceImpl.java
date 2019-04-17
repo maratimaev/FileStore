@@ -136,7 +136,7 @@ public class GroupServiceImpl implements GroupService {
      */
     @Override
     @Transactional
-    public void saveUserGroupByMessage(UserView userView, String msgUuid) {
+    public String saveUserGroupByMessage(UserView userView, String msgUuid) {
         if (StringUtils.isEmpty(msgUuid) || userView == null) {
             throw new RuntimeException("(Custom) Error -> msgUuid and userView can't be null");
         }
@@ -147,14 +147,14 @@ public class GroupServiceImpl implements GroupService {
         if (user == null || addedUser == null) {
             throw new RuntimeException("(Custom) Error -> user and addedUser can't be null");
         }
-
+        String uuid = "";
         switch (message.getCode()) {
             case 1:
                 ListGroup listGroup = user.getListGroup();
                 listGroup.getMembers().add(addedUser);
                 listGroupRepository.save(listGroup);
 
-                messageService.createMessage(user, addedUser,
+                uuid = messageService.createMessage(user, addedUser,
                         String.format("User %s gives you access to list files", user.getUsername()), 0);
                 break;
             case 2:
@@ -166,27 +166,62 @@ public class GroupServiceImpl implements GroupService {
                 dg.getMembers().add(addedUser);
                 downloadGroupRepository.save(dg);
 
-                messageService.createMessage(user, addedUser,
+                uuid = messageService.createMessage(user, addedUser,
                         String.format("User %s gives you access to download files", user.getUsername()), 0);
                 break;
         }
         messageService.deleteMessage(message.getMsgUuid());
+        return uuid;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional
-    public void deleteListGroup(UserView userView) {
-        User user = userService.getUser(userView.getUsername());
-        ListGroup listGroup = user.getListGroup();
+    public void deleteListGroup(ListGroup listGroup) {
+        if (listGroup == null) {
+            throw new RuntimeException("(Custom) Error -> listGroup can't be null");
+        }
         listGroupRepository.delete(listGroup);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional
-    public void deleteDownloadGroup(UserView userView) {
-        User user = userService.getUser(userView.getUsername());
-        DownloadGroup downloadGroup = user.getDownloadGroup();
+    public void clearListGroup(ListGroup listGroup) {
+        if (listGroup == null) {
+            throw new RuntimeException("(Custom) Error -> listGroup can't be null");
+        }
+        listGroup.setMembers(new HashSet<>());
+        listGroupRepository.save(listGroup);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional
+    public void deleteDownloadGroup(DownloadGroup downloadGroup) {
+        if (downloadGroup == null) {
+            throw new RuntimeException("(Custom) Error -> downloadGroup can't be null");
+        }
         downloadGroupRepository.delete(downloadGroup);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional
+    public void clearDownloadGroup(DownloadGroup downloadGroup) {
+        if (downloadGroup == null) {
+            throw new RuntimeException("(Custom) Error -> downloadGroup can't be null");
+        }
+        downloadGroup.setMembers(new HashSet<>());
+        downloadGroupRepository.save(downloadGroup);
     }
 
     /**

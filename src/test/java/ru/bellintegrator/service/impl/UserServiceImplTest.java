@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.junit.rules.TestName;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -38,8 +39,14 @@ public class UserServiceImplTest {
     @Rule
     public ExpectedException exception = ExpectedException.none();
 
+    @Rule
+    public TestName testName = new TestName();
+
     @Before
     public void createTestUser() {
+        if(testName.getMethodName().contains("checkFail")) {
+            return;
+        }
         this.testUserView = new UserView(
                 RandomStringUtils.random(8, true, false),
                 RandomStringUtils.random(8, true, true),
@@ -50,6 +57,9 @@ public class UserServiceImplTest {
 
     @After
     public void deleteTestUser() {
+        if(testName.getMethodName().contains("checkFail")) {
+            return;
+        }
         userService.delete(this.testUserView.getUsername());
     }
 
@@ -62,13 +72,6 @@ public class UserServiceImplTest {
         Assert.assertThat(checkUser.getId(), is(notNullValue()));
         Assert.assertThat(checkUser.getActivationCode().isEmpty(), is(false));
         Assert.assertThat(checkUser.isActive(),is(false));
-    }
-
-    @Test
-    public void checkFailUserCreation() {
-        exception.expect(RuntimeException.class);
-        exception.expectMessage("(Custom) Error -> userView can't be null");
-        userService.createUser(null);
     }
 
     @Test
@@ -85,16 +88,12 @@ public class UserServiceImplTest {
     }
 
     @Test
-    public void checkFailUserActivationIfNullCode() {
-        exception.expect(RuntimeException.class);
-        exception.expectMessage("(Custom) Error -> activationCode can't be null");
-        userService.activateUser(null);
-    }
+    public void checkSuccessUserListMinusUser() {
+        List<String> fullList = userService.getUserViewList().stream().map(UserView::getUsername).collect(Collectors.toList());
 
-    @Test
-    public void checkFailUserActivationIfWrongCode() {
-        boolean isActivated = userService.activateUser(RandomStringUtils.random(20, true, true));
-        Assert.assertThat(isActivated, is(false));
+        Assert.assertThat(fullList.contains(this.testUserView.getUsername()), is(true));
+        List<String> cuttedList = userService.getUsernameListMinus(this.testUserView);
+        Assert.assertThat(cuttedList.contains(this.testUserView.getUsername()), is(false));
     }
 
     @Test
@@ -121,11 +120,23 @@ public class UserServiceImplTest {
     }
 
     @Test
+    public void checkFailUserActivationIfNullCode() {
+        exception.expect(RuntimeException.class);
+        exception.expectMessage("(Custom) Error -> activationCode can't be null");
+        userService.activateUser(null);
+    }
+
+    @Test
+    public void checkFailUserActivationIfWrongCode() {
+        boolean isActivated = userService.activateUser(RandomStringUtils.random(20, true, true));
+        Assert.assertThat(isActivated, is(false));
+    }
+
+    @Test
     public void checkFailUserRetrievingIfNullUsername() {
         exception.expect(RuntimeException.class);
         exception.expectMessage("(Custom) Error -> username can't be null");
         userService.loadUserByUsername(null);
-        userService.getUser((String)null);
     }
 
     @Test
@@ -156,12 +167,9 @@ public class UserServiceImplTest {
     }
 
     @Test
-    public void checkUserListMinusUser() {
-        List<String> fullList = userService.getUserViewList().stream().map(UserView::getUsername).collect(Collectors.toList());
-
-        Assert.assertThat(fullList.contains(this.testUserView.getUsername()), is(true));
-        List<String> cuttedList = userService.getUsernameListMinus(this.testUserView);
-        Assert.assertThat(cuttedList.contains(this.testUserView.getUsername()), is(false));
+    public void checkFailUserCreation() {
+        exception.expect(RuntimeException.class);
+        exception.expectMessage("(Custom) Error -> userView can't be null");
+        userService.createUser(null);
     }
-
 }

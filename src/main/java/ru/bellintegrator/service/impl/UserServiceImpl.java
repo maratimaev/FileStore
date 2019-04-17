@@ -300,9 +300,15 @@ public class UserServiceImpl implements UserService {
         this.saveToDb(user);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional
     public void saveToDb(User user) {
+        if (user == null) {
+            throw new RuntimeException("(Custom) Error -> user can't be null");
+        }
         userRepository.save(user);
     }
 

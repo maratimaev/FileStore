@@ -43,14 +43,9 @@ public class MessageServiceImplTest {
         User u = userService.getUser(uv.getUsername());
 
         String msg = RandomStringUtils.random(25, true, false);
-        messageService.createMessage(u, u, msg, 1);
+        String uuid = messageService.createMessage(u, u, msg, 1);
         List<MessageView> messageViews = messageService.getAccessMessagesFrom(uv);
         Assert.assertThat(messageViews.size() > 0, is(true));
-
-        String uuid = messageViews.stream()
-                .filter(messageView -> messageView.getMsg().equals(msg))
-                .map(MessageView::getMsgUuid)
-                .collect(Collectors.toList()).get(0);
 
         Assert.assertThat(messageService.getMessage(uuid).getMsg().equals(msg), is(true));
 
