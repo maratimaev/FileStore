@@ -9,7 +9,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import ru.bellintegrator.service.FileService;
 
 /**
- * Старт приложения
+ * Старт Spring приложения
  */
 @SpringBootApplication
 @EnableAspectJAutoProxy

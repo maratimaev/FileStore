@@ -14,6 +14,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
 import java.util.List;
 
+/**
+ * Отображение сообщений между пользователями
+ */
 @Component
 public class AddMessagesResponseInterceptor extends HandlerInterceptorAdapter {
 

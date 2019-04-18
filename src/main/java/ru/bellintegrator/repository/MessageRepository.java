@@ -7,7 +7,7 @@ import ru.bellintegrator.entity.User;
 import java.util.List;
 
 /**
- * Методы работс с сообщениями
+ * Методы работы с сообщениями
  */
 public interface MessageRepository extends JpaRepository<Message, Long> {
     /** Поиск сообщений по адресату и кодам
