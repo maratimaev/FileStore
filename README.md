@@ -49,3 +49,9 @@
 **spring.mail.username=activation-code-sender@yandex.ru** - *почтовый адрес для отправки писем*
 
 **spring.datasource.url=jdbc:postgresql://localhost:5432/FileStore** - *параметры подключения к базе данных*
+
+## Сборка
+Проект собирается в виде **war** файла с помощью **Maven** с последующим разворачиванием на сервере приложений **Tomcat**
+
+## Автор 
+Марат Имаев
