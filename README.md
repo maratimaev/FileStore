@@ -1,15 +1,22 @@
 # Многопользовательский сервис хранения файлов
 Файлы загружаются через web интерфейс и хранятся локально в папке.
+![alt text](https://github.com/maratimaev/FileStore/blob/master/pics/upload.JPG)
 Для зугрузки файлов необходимо создать учетную запись и активировать по высланному на адрес пользователя письму.
 Ссылка для активации валидна в течение 1 дня.
+![alt text](https://github.com/maratimaev/FileStore/blob/master/pics/login.JPG)
+
 ![alt text](https://github.com/maratimaev/FileStore/blob/master/pics/create_new_user.JPG)
 Реализована возможность предоставления прав на просмотр и скачивание фалов другим пользователям.
 Доступна возможность запроса доступа на просмотр или скачивание файлов другого пользователя через подсистему обмена 
-
 сообщениями.
+![alt text](https://github.com/maratimaev/FileStore/blob/master/pics/sharing.JPG)
+
+![alt text](https://github.com/maratimaev/FileStore/blob/master/pics/files.JPG)
 Пользователям могут быть делегированы следующие роли:
 "Администратор" - просмотр, скачивание и удаление файлов всех пользователей
+![alt text](https://github.com/maratimaev/FileStore/blob/master/pics/managing.JPG)
 "Аналитик" - просмотр файлов всех пользователей, статистика по количеству пользователей, файлов, числу скачиваний файлов
+![alt text](https://github.com/maratimaev/FileStore/blob/master/pics/statistics.JPG)
 
 ## Используемые фреймворки и библиотеки
 ***Проект построен на базе:***
