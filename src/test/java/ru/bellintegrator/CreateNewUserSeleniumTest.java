@@ -24,7 +24,6 @@ import static org.hamcrest.core.Is.is;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-//@TestPropertySource("classpath:application-test.properties")
 public class CreateNewUserSeleniumTest {
 
 	@Value("${gecko.driver}")
