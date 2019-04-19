@@ -62,28 +62,6 @@ public class FileServiceImpl implements FileService {
     private MapperFacade mapperFacade;
 
     /**
-     * Инициализация директории хранения файлов
-     */
-    @PostConstruct
-    public void setFileStoreFolder(){
-        this.rootLocation = Paths.get(fileStoreFolder);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void init() {
-        if (!Files.exists(rootLocation)) {
-            try {
-                Files.createDirectory(rootLocation);
-            } catch (IOException e) {
-                throw new RuntimeException("(Custom) Could not initialize storage!", e);
-            }
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -286,5 +264,20 @@ public class FileServiceImpl implements FileService {
             throw new RuntimeException("(Custom) Error -> fileInfo can't be null");
         }
         fileInfoRepository.delete(fileInfo);
+    }
+
+    /**
+     * Создание директории хранения файлов
+     */
+    @PostConstruct
+    private void init() {
+        this.rootLocation = Paths.get(fileStoreFolder);
+        if (!Files.exists(rootLocation)) {
+            try {
+                Files.createDirectory(rootLocation);
+            } catch (IOException e) {
+                throw new RuntimeException("(Custom) Could not initialize storage!", e);
+            }
+        }
     }
 }

@@ -12,11 +12,6 @@ import java.util.List;
  * Сервис работы с файлами
  */
 public interface FileService {
-    /**
-     * Создание директории хранения файлов
-     */
-    void init();
-
     /** Поиск файла по имени и Uuid
      * @param tmpFilename имя файла плюс Uuid
      * @return dto файла
