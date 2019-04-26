@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Version;
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -80,12 +81,11 @@ public class User {
     @OneToOne(fetch = FetchType.EAGER)
     private DownloadGroup downloadGroup;
 
+    @Version
+    private int version;
+
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getUsername() {

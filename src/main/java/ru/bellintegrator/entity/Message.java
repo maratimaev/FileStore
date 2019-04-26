@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import javax.persistence.Version;
 
 /**
  * Entity сообщения
@@ -47,6 +48,9 @@ public class Message {
      * UUID сообщения
      */
     private String msgUuid;
+
+    @Version
+    private int version;
 
     public Long getId() {
         return id;

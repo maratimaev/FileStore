@@ -28,7 +28,7 @@ public class FileInfo {
      * Служебное поле JPA
      */
     @Version
-    private Integer version;
+    private int version;
 
     /**
      * Имя файла
